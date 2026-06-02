@@ -6,7 +6,8 @@ const TECH_LABELS = [
   'QLoRA', 'HuggingFace', 'Docker', 'W&B', 'LLMs',
   'RAG', 'PEFT', 'NLP', 'Transformers', 'Groq',
   'Git', 'AWS', 'Vite', 'Gemini', 'bitsandbytes',
-  'AST', 'CodeBERT', 'Flask', 'Kubernetes', 'SSE',
+  'AST', 'CodeBERT', 'Gemma 4', 'llama.cpp', 'MCP',
+  'SQLite', 'Kubernetes', 'SSE',
 ];
 
 /* ── Palette matching the site's purple/cyan gradient ──────── */

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { projects } from '../data/projects';
 import { useScrollReveal } from '../hooks/useScrollReveal';
-import { AgentDeepDive, ToolForgeDeepDive } from './ProjectDeepDive';
+import { ScreenMindDeepDive, AgentDeepDive, ToolForgeDeepDive } from './ProjectDeepDive';
 
 // Tag-based categories derived from actual project tech stacks
 const categories = [
   { label: 'All', filter: () => true },
-  { label: 'Agentic AI', filter: p => [1, 2].includes(p.id) },
+  { label: 'Agentic AI', filter: p => [1, 2, 3].includes(p.id) },
   { label: 'Computer Vision', filter: p => p.tags.some(t => ['CNN', 'GradCAM', 'OpenCV', 'LBPH'].includes(t)) },
   { label: 'NLP', filter: p => p.tags.some(t => ['BART', 'T5', 'PEGASUS', 'CodeBERT'].includes(t)) },
   { label: 'Full Stack', filter: p => p.tags.some(t => ['React', 'React 19', 'FastAPI', 'Flask', 'Android'].includes(t)) },
@@ -23,8 +23,9 @@ export default function Projects() {
   const filtered = projects.filter(activeCat.filter);
 
   const renderDetails = (project) => {
-    if (project.id === 1) return <AgentDeepDive />;
-    if (project.id === 2) return <ToolForgeDeepDive />;
+    if (project.id === 1) return <ScreenMindDeepDive />;
+    if (project.id === 2) return <AgentDeepDive />;
+    if (project.id === 3) return <ToolForgeDeepDive />;
     if (!project.highlights || project.highlights.length === 0) return null;
     return (
       <div className="project-highlights">
@@ -103,8 +104,8 @@ export default function Projects() {
                         onClick={() => setExpanded(expanded === p.id ? null : p.id)}
                       >
                         {expanded === p.id
-                          ? (p.id <= 2 ? '▾ Close deep dive' : '▾ Hide details')
-                          : (p.id <= 2 ? '▸ Explore architecture & metrics' : '▸ Show technical details')
+                          ? (p.id <= 3 ? '▾ Close deep dive' : '▾ Hide details')
+                          : (p.id <= 3 ? '▸ Explore architecture & metrics' : '▸ Show technical details')
                         }
                       </button>
                       <div className="project-tags">

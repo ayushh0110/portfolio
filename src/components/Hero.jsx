@@ -82,12 +82,12 @@ export default function Hero() {
               <span className="stat-label">CGPA</span>
             </div>
             <div className="stat-item">
-              <span className="stat-num">8+</span>
+              <span className="stat-num">9+</span>
               <span className="stat-label">Projects Built</span>
             </div>
             <div className="stat-item">
-              <span className="stat-num">1</span>
-              <span className="stat-label">OSS Contribution</span>
+              <span className="stat-num">2</span>
+              <span className="stat-label">OSS Projects</span>
             </div>
           </div>
         </div>

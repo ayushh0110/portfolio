@@ -1,6 +1,30 @@
 export const projects = [
   {
     id: 1,
+    title: 'ScreenMind',
+    desc: 'Open-source, local-only AI screen memory tool. Captures screenshots, analyzes them with Gemma 4 running entirely on-device via llama.cpp, and stores everything in a searchable local SQLite database with hybrid semantic + keyword search. No data ever leaves your machine.',
+    icon: '🧠',
+    tags: ['Python', 'Gemma 4', 'llama.cpp', 'FastAPI', 'SQLite', 'sentence-transformers', 'MCP'],
+    category: 'AI/ML',
+    featured: true,
+    live: null,
+    github: 'https://github.com/ayushh0110/ScreenMind',
+    article: 'https://dev.to/ayushh0110/screenmind-i-built-a-privacy-first-ai-screen-memory-that-runs-entirely-on-your-machine-3j20',
+    highlights: [
+      'Multimodal on-device AI — Gemma 4 E2B (2B params) analyzes screenshots natively via llama-server, no cloud API calls. Runs on consumer GPUs with as little as 4GB VRAM',
+      'Hybrid search engine combining MiniLM sentence embeddings with SQLite FTS5 full-text search — instant recall across thousands of captured screenshots',
+      'Local-first architecture — all data stored in SQLite, all processing on-device, zero telemetry, zero network calls for analysis',
+      'MCP (Model Context Protocol) server for seamless integration with Claude Desktop and other AI assistants — query your screen history from any MCP-compatible tool',
+      'Autonomous agent mode with multi-step task execution using screen context awareness — can answer complex questions by analyzing your visual history',
+      'Smart capture with configurable intervals, app exclusion lists, idle detection, and duplicate frame skipping',
+      'FastAPI backend with PIN-based auth (PBKDF2-SHA256), React dashboard for browsing, searching, and managing captures',
+      'GGUF quantization for efficient inference — automatic model download and lifecycle management via llama-server sidecar process',
+      'Cross-platform support — Windows, Linux, macOS with platform-specific optimizations for screenshots, hotkeys, and process management',
+      'MIT licensed, open-source with active community. Privacy-first alternative to Rewind.ai and Microsoft Windows Recall',
+    ],
+  },
+  {
+    id: 2,
     title: 'Autonomous AI Agent',
     desc: 'A production-deployed, multi-phase AI agent with a Planner–Executor–Critic pipeline, hybrid semantic memory (RAG), 9 integrated tools, and an adaptive execution engine. Serves real-time responses with sub-2s end-to-end latency.',
     icon: '🤖',
@@ -22,7 +46,7 @@ export const projects = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     title: 'ToolForge: Fine-Tuned Tool Router',
     desc: 'End-to-end ML pipeline that replaced brittle regex routing with a QLoRA fine-tuned Qwen2.5-7B model, improving tool-routing accuracy from 75% to 86.2%. Built as a feature-flagged extension for the Autonomous Agent.',
     icon: '🔀',
@@ -45,7 +69,7 @@ export const projects = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     title: 'OptiBlend: Code Optimizer',
     desc: 'A 3-module static + ML code optimization suite with a Tkinter GUI. Performs dead code elimination, semantic clone detection via AST normalization, and loop-invariant code motion (LICM) — with a fine-tuned CodeBERT gating ML predictions to static analysis. Benchmarked across 95+ test cases at 100–500 line scales.',
     icon: '⚡',
@@ -69,7 +93,7 @@ export const projects = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     title: 'CIFAR-10 CNN + GradCAM',
     desc: 'Custom CNN trained on CIFAR-10 with Grad-CAM explainability heatmaps. Upload any image and get top-3 class predictions with visual explanations of which regions the model focuses on. Deployed on Hugging Face Spaces.',
     icon: '🧠',
@@ -87,7 +111,7 @@ export const projects = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     title: 'Multi-Model Text Summarizer',
     desc: 'Streamlit app that summarizes large text & PDFs using BART, T5-Large, and PEGASUS. Supports long-text chunking, model switching, and side-by-side output comparison across three state-of-the-art summarization models.',
     icon: '📄',
@@ -105,7 +129,7 @@ export const projects = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     title: 'Llamate — LLM Chat Tool',
     desc: 'Built during CERELABS internship. An LLM interaction platform with <500ms first-token latency via streaming inference, multi-turn conversation management, session persistence, and runtime parameter control.',
     icon: '💬',
@@ -122,7 +146,7 @@ export const projects = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     title: 'Compressive Strength Predictor',
     desc: 'An end-to-end ML pipeline predicting material compressive strength from 4 input parameters (Grade, UPV, Rebound, Age). Random Forest model served via Flask API on AWS EC2, consumed by a native Android app — achieving R² scores of 0.63–0.83.',
     icon: '🏗️',
@@ -140,7 +164,7 @@ export const projects = [
     ],
   },
   {
-    id: 8,
+    id: 9,
     title: 'Face Identification — Raspberry Pi',
     desc: 'A real-time face recognition system built for Raspberry Pi using OpenCV. Captures headshots via Pi camera, trains an LBPH face recognizer, and performs live face identification against stored face embeddings.',
     icon: '📸',

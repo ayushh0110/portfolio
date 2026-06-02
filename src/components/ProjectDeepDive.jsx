@@ -1,3 +1,224 @@
+export function ScreenMindDeepDive() {
+  return (
+    <div className="dd">
+      <div className="dd-section">
+        <div className="dd-section-label">System Architecture</div>
+        <div className="dd-arch-flow">
+          {[
+            { icon: '📸', name: 'Capture Worker', desc: 'Cross-platform screenshots via MSS (Windows/Linux) with configurable intervals, idle detection, app exclusion lists. pHash-based deduplication skips near-identical frames' },
+            { icon: '🔍', name: 'OCR + Layout', desc: 'EasyOCR extracts text with dark-theme preprocessing (A/B tested). Layout Analyzer classifies OCR boxes into Gemma-detected regions (sidebar, chat, toolbar) using coordinate parsing' },
+            { icon: '🧠', name: 'Gemma 4 Analysis', desc: '3 analysis modes: Accurate (~76s, merged thinking), Balanced (~40-50s, thinking enabled), Fast (~12s, no-thinking prefill trick). JSON repair pipeline + regex fallback for malformed LLM output' },
+            { icon: '💬', name: 'Chat Agent + MCP', desc: 'Agent-style chat with 3 modes: FTS5+semantic hybrid retrieval, vision (multimodal screenshot analysis), and casual. MCP server exposes 6 tools for Claude Desktop integration' },
+          ].map((n, i) => (
+            <div className="dd-arch-node" key={n.name}>
+              <div className="dd-arch-icon">{n.icon}</div>
+              <div className="dd-arch-name">{n.name}</div>
+              <div className="dd-arch-desc">{n.desc}</div>
+              {i < 3 && <div className="dd-arch-arrow">→</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="dd-section">
+        <div className="dd-section-label">Key Stats</div>
+        <div className="dd-metrics">
+          {[
+            { val: '3', label: 'Analysis modes (accurate/balanced/fast)', color: '#22d3ee' },
+            { val: '6', label: 'MCP tools for Claude Desktop', color: '#8b5cf6' },
+            { val: '17', label: 'API route modules', color: '#34d399' },
+            { val: '0', label: 'Cloud API calls for analysis', color: '#f59e0b' },
+            { val: '581', label: 'Lines — Agent Runner', color: '#22d3ee' },
+            { val: '592', label: 'Lines — Gemma Analyzer', color: '#8b5cf6' },
+            { val: '485', label: 'Lines — Layout Analyzer', color: '#34d399' },
+            { val: '460', label: 'Lines — Chat Agent', color: '#f59e0b' },
+          ].map(m => (
+            <div className="dd-metric-card" key={m.label}>
+              <span className="dd-metric-val" style={{ color: m.color }}>{m.val}</span>
+              <span className="dd-metric-label">{m.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="dd-section">
+        <div className="dd-section-label">Chat Agent — Conversational AI with Timeline Access (460 lines)</div>
+        <div className="dd-eng-grid">
+          {[
+            { icon: '🎯', title: '3-Mode Router', desc: 'Inverted intent detection: defaults to timeline mode, skips ONLY for obvious chitchat (greetings, jokes). FTS5 probe is the real gatekeeper — if no keyword matches, falls to casual chat' },
+            { icon: '🔍', title: 'Hybrid Retrieval', desc: 'FTS5 keyword search → candidate loading with embeddings → semantic re-ranking via MiniLM cosine similarity. Hybrid scoring: 70% semantic + 20% recency decay + 10% FTS rank boost' },
+            { icon: '📷', title: 'Vision Fallback', desc: 'If text-based answer fails (empty response), automatically falls back to multimodal: loads screenshot from disk, resizes to ≤1280px, sends to Gemma as JPEG with the question' },
+            { icon: '💡', title: 'App-Aware Prompts', desc: 'Dynamic system prompts per app: Discord → focus chat area, ignore sidebar/Nitro ads. Gmail/Outlook → scan email list, quote matching ones. General → focus main content, ignore taskbar' },
+            { icon: '⏳', title: 'GPU Pre-emption', desc: 'Detects in-flight analysis inference, cancels it so chat gets GPU immediately. 500ms pause for llama-server slot release, then proceeds with chat inference' },
+            { icon: '🔄', title: 'Conversation Memory', desc: 'Casual mode: 6-turn sliding window history for continuity. Timeline mode: 2-turn truncated history (200 char cap) for follow-up context without token bloat' },
+          ].map(e => (
+            <div className="dd-eng-card" key={e.title}>
+              <div className="dd-eng-icon">{e.icon}</div>
+              <div className="dd-eng-title">{e.title}</div>
+              <div className="dd-eng-desc">{e.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="dd-section">
+        <div className="dd-section-label">Gemma 4 Analyzer — 3 Analysis Modes (592 lines)</div>
+        <div className="dd-ablation">
+          <div className="dd-abl-header">
+            <div className="dd-abl-cell dd-abl-corner">Mode</div>
+            <div className="dd-abl-cell dd-abl-col">Thinking</div>
+            <div className="dd-abl-cell dd-abl-col">Layout</div>
+            <div className="dd-abl-cell dd-abl-col">Technique</div>
+          </div>
+          {[
+            ['Accurate', 'Enabled', 'Gemma-detected', 'Single merged call ★'],
+            ['Balanced', 'Enabled', 'OCR clustering', 'Analysis-only call'],
+            ['Fast', 'Disabled', 'OCR clustering', 'Prefill trick (</think>)'],
+          ].map(([mode, thinking, layout, technique], i) => (
+            <div className="dd-abl-row" key={i}>
+              <div className="dd-abl-cell dd-abl-row-label">{mode}</div>
+              <div className="dd-abl-cell dd-abl-val">{thinking}</div>
+              <div className="dd-abl-cell dd-abl-val">{layout}</div>
+              <div className={`dd-abl-cell dd-abl-val ${i === 0 ? 'dd-abl-best' : ''}`}>{technique}</div>
+            </div>
+          ))}
+        </div>
+        <p className="dd-abl-note">JSON parse pipeline: extract → json.loads() → _repair_json() (trailing commas, truncated strings, missing braces) → regex fallback (field-level extraction) → retry inference. Per-app pHash cache: identical (diff≤2) reuses everything, minor (3-7) reuses layout, full (≥8) runs complete pipeline.</p>
+      </div>
+
+      <div className="dd-section">
+        <div className="dd-section-label">Layout Detection + OCR Text Organization (485 lines)</div>
+        <div className="dd-pipeline">
+          {[
+            { step: '01', icon: '📸', name: 'OCR Preprocessing', desc: 'Dark-theme aware: auto-invert for screens with <100 avg brightness. 1920px upscale, SHARPEN filter, 1.5× contrast boost. A/B tested across 5 rounds, 7 strategies — detection confidence 0.04 → 0.54', color: '#8b5cf6' },
+            { step: '02', icon: '🗺️', name: 'Layout Detection', desc: 'Gemma identifies visual regions (sidebar, chat_area, toolbar, profile_panel) as fractional coordinates. Fast mode: instant OCR-based column clustering (left/center/right) using x-coordinate distribution — no LLM call needed', color: '#22d3ee' },
+            { step: '03', icon: '📦', name: 'Coordinate Classification', desc: 'OCR boxes classified into regions using center-point matching. Sorted narrow-first to prevent wide regions from stealing narrow-panel boxes. Chat regions auto-detected via timestamp presence', color: '#34d399' },
+            { step: '04', icon: '💬', name: 'Chat Formatting', desc: 'Timestamp-based sender attribution: finds username LEFT of timestamp on same Y-row, groups message lines below into "sender: msg1 | msg2" format. Falls back to simple Y-row grouping for non-chat regions', color: '#f59e0b' },
+          ].map((s, i) => (
+            <div className="dd-pipe-stage" key={s.step}>
+              <div className="dd-pipe-step" style={{ background: s.color + '22', borderColor: s.color, color: s.color }}>{s.step}</div>
+              <div className="dd-pipe-icon">{s.icon}</div>
+              <div className="dd-pipe-name">{s.name}</div>
+              <div className="dd-pipe-desc">{s.desc}</div>
+              {i < 3 && <div className="dd-pipe-arrow" style={{ color: s.color }}>↓</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="dd-section">
+        <div className="dd-section-label">Screenshot Deduplication — pHash System</div>
+        <div className="dd-eng-grid">
+          {[
+            { icon: '#️⃣', title: 'Perceptual Hashing', desc: 'Uses imagehash.phash() to compute perceptual hash of each screenshot. Hamming distance between consecutive frames determines similarity — immune to cursor blinks and clock ticks' },
+            { icon: '🎚️', title: 'Three-Tier Cache', desc: 'Per-app pHash cache in AnalysisWorker: identical (diff ≤ 2) reuses all analysis + layout. Minor change (3-7) reuses layout, re-runs fast analysis. Full change (≥ 8) runs complete pipeline' },
+            { icon: '💾', title: 'Resource Savings', desc: 'Skips redundant Gemma 4 calls entirely for static screens. Threshold=8 balances meaningful change detection vs. ignoring micro-animations and UI shimmer' },
+          ].map(e => (
+            <div className="dd-eng-card" key={e.title}>
+              <div className="dd-eng-icon">{e.icon}</div>
+              <div className="dd-eng-title">{e.title}</div>
+              <div className="dd-eng-desc">{e.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="dd-section">
+        <div className="dd-section-label">MCP Server + SDK — External Integration (485 + 410 lines)</div>
+        <div className="dd-memory">
+          <div className="dd-mem-block">
+            <div className="dd-mem-title">🔌 MCP Server (Model Context Protocol)</div>
+            <ul className="dd-mem-list">
+              <li>6 tools: search_screenshots, get_recent_context, get_timeline, get_daily_summary, get_app_usage, take_screenshot</li>
+              <li>stdio transport for Claude Desktop / Cursor / VS Code (Cline/Continue)</li>
+              <li>stdout→stderr redirect to prevent print() from corrupting MCP protocol</li>
+              <li>Hybrid search: FTS5 keyword + MiniLM semantic re-ranking</li>
+              <li>Auto-initializes Database + Embedder with graceful fallback</li>
+            </ul>
+          </div>
+          <div className="dd-mem-connector">⟷</div>
+          <div className="dd-mem-block">
+            <div className="dd-mem-title">🧰 ScreenMind SDK (Plugin API)</div>
+            <ul className="dd-mem-list">
+              <li>Python SDK wrapping local REST API for plugin agents</li>
+              <li>Functions: get_recent_activity, search, ask_gemma, notify</li>
+              <li>save_state/load_state for persistent agent state (JSON files)</li>
+              <li>Thread-local agent context for state isolation between plugins</li>
+              <li>Zero external deps — pure urllib for HTTP calls</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="dd-section">
+        <div className="dd-section-label">Agent System — Scheduled Autonomous Tasks (581 lines)</div>
+        <div className="dd-eng-grid">
+          {[
+            { icon: '📝', title: 'Markdown Agents', desc: 'No-code agents defined in .md files with YAML frontmatter (schedule, data sections, output destinations). Gemma processes injected timeline data according to user-written instructions' },
+            { icon: '🐍', title: 'Python Plugins', desc: 'Full-code agents with run() entry point. Security: requires explicit user approval before execution. SDK provides get_recent_activity, ask_gemma, save_state, search' },
+            { icon: '📊', title: 'Adaptive Data Budget', desc: 'Injects screen data proportional to model context window. Builds sections in priority order: apps, URLs, meetings, mood, timeline — each gated by remaining token budget' },
+            { icon: '📤', title: 'Multi-Output', desc: 'Comma-separated destinations: "local" (always), "obsidian" (vault sync with tags), "webhook" (Slack/Discord compatible POST). Output saved as timestamped markdown files' },
+            { icon: '⏰', title: 'Background Scheduler', desc: 'Daemon thread scans agents directory every 60s. Parses schedule strings (every 30m, every 6h, daily). Each agent runs in its own thread to not block the scheduler' },
+            { icon: '📋', title: 'Persistent Run Log', desc: 'Last 30 runs logged to JSON file with timestamp, status, duration, output (truncated to 500 chars). Survives restarts, exposed via API for dashboard monitoring' },
+          ].map(e => (
+            <div className="dd-eng-card" key={e.title}>
+              <div className="dd-eng-icon">{e.icon}</div>
+              <div className="dd-eng-title">{e.title}</div>
+              <div className="dd-eng-desc">{e.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="dd-section">
+        <div className="dd-section-label">Infrastructure & Engineering</div>
+        <div className="dd-eng-grid">
+          {[
+            { icon: '🦙', title: 'llama-server Sidecar', desc: 'Managed llama.cpp process with automatic GGUF model download, health monitoring (/health polling), graceful SIGTERM shutdown, and GPU layer auto-detection based on available VRAM' },
+            { icon: '🔐', title: 'PIN-Based Auth', desc: 'PBKDF2-SHA256 with 480,000 iterations. Network safety check: warns and auto-falls back to localhost when binding to 0.0.0.0 without PIN enabled' },
+            { icon: '🗄️', title: 'SQLite + WAL + FTS5', desc: 'Thread-safe via threading.local() connections. WAL mode for concurrent reads/writes. FTS5 virtual table for instant full-text search across all captured text' },
+            { icon: '🔢', title: 'Semantic Embeddings', desc: 'MiniLM-L6-v2 (384-dim) sentence-transformers. Embeddings stored as BLOBs in SQLite alongside FTS5 tokens. Cosine similarity search via NumPy dot product' },
+            { icon: '🖥️', title: 'Cross-Platform', desc: 'Platform-specific: MSS screenshots (Win/Linux), keyboard hotkeys (Windows) vs pynput (Linux/macOS), pyperclip clipboard, win32gui window detection' },
+            { icon: '⚙️', title: 'Pydantic 2.x Config', desc: 'Hot-reloadable JSON overrides via config_overrides.json. 100+ configurable settings: capture interval, analysis mode, model params, excluded apps, search weights, encryption toggle' },
+          ].map(e => (
+            <div className="dd-eng-card" key={e.title}>
+              <div className="dd-eng-icon">{e.icon}</div>
+              <div className="dd-eng-title">{e.title}</div>
+              <div className="dd-eng-desc">{e.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="dd-section">
+        <div className="dd-section-label">Privacy Comparison</div>
+        <div className="dd-ablation">
+          <div className="dd-abl-header">
+            <div className="dd-abl-cell dd-abl-corner">Feature</div>
+            <div className="dd-abl-cell dd-abl-col">Rewind.ai</div>
+            <div className="dd-abl-cell dd-abl-col">Windows Recall</div>
+            <div className="dd-abl-cell dd-abl-col">ScreenMind</div>
+          </div>
+          {[
+            ['Data Storage', 'Cloud', 'Local + Cloud', 'Local only ★'],
+            ['AI Processing', 'Cloud API', 'Azure/Cloud', 'On-device ★'],
+            ['Open Source', 'No', 'No', 'MIT License ★'],
+            ['Telemetry', 'Yes', 'Yes', 'Zero ★'],
+            ['Cost', '$20/mo', 'Windows only', 'Free ★'],
+          ].map(([feature, rewind, recall, sm], i) => (
+            <div className="dd-abl-row" key={i}>
+              <div className="dd-abl-cell dd-abl-row-label">{feature}</div>
+              <div className="dd-abl-cell dd-abl-val">{rewind}</div>
+              <div className="dd-abl-cell dd-abl-val">{recall}</div>
+              <div className={`dd-abl-cell dd-abl-val dd-abl-best`}>{sm}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function AgentDeepDive() {
   return (
     <div className="dd">
