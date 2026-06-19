@@ -175,7 +175,7 @@ export function ScreenMindDeepDive() {
         <div className="dd-eng-grid">
           {[
             { icon: '🦙', title: 'llama-server Sidecar', desc: 'Managed llama.cpp process with automatic GGUF model download, health monitoring (/health polling), graceful SIGTERM shutdown, and GPU layer auto-detection based on available VRAM' },
-            { icon: '🔐', title: 'PIN-Based Auth', desc: 'PBKDF2-SHA256 with 480,000 iterations. Network safety check: warns and auto-falls back to localhost when binding to 0.0.0.0 without PIN enabled' },
+            { icon: '🔐', title: 'PIN-Based Auth', desc: 'PBKDF2-SHA256 (salted, 100,000 iterations). Network safety check: warns and auto-falls back to localhost when binding to 0.0.0.0 without PIN enabled' },
             { icon: '🗄️', title: 'SQLite + WAL + FTS5', desc: 'Thread-safe via threading.local() connections. WAL mode for concurrent reads/writes. FTS5 virtual table for instant full-text search across all captured text' },
             { icon: '🔢', title: 'Semantic Embeddings', desc: 'MiniLM-L6-v2 (384-dim) sentence-transformers. Embeddings stored as BLOBs in SQLite alongside FTS5 tokens. Cosine similarity search via NumPy dot product' },
             { icon: '🖥️', title: 'Cross-Platform', desc: 'Platform-specific: MSS screenshots (Win/Linux), keyboard hotkeys (Windows) vs pynput (Linux/macOS), pyperclip clipboard, win32gui window detection' },
@@ -322,14 +322,14 @@ export function AgentDeepDive() {
         <div className="dd-section-label">Integrated Tool Suite</div>
         <div className="dd-tool-grid">
           {[
-            { icon: '🌤️', name: 'Weather', api: 'OpenWeatherMap' },
-            { icon: '📰', name: 'News / Web Search', api: 'DuckDuckGo' },
-            { icon: '📧', name: 'Email', api: 'Gmail SMTP' },
-            { icon: '🔗', name: 'URL Reader', api: 'BeautifulSoup' },
-            { icon: '📊', name: 'Stock Price', api: 'yfinance' },
-            { icon: '🧮', name: 'Calculator', api: 'math engine' },
-            { icon: '📚', name: 'Wikipedia', api: 'Wikipedia API' },
-            { icon: '💱', name: 'Unit Converter', api: 'pint library' },
+            { icon: '🌤️', name: 'Weather', api: 'wttr.in' },
+            { icon: '🔍', name: 'Web Search', api: 'DuckDuckGo (ddgs)' },
+            { icon: '🌐', name: 'Translation', api: 'MyMemory API' },
+            { icon: '🔗', name: 'URL Reader', api: 'readability-lxml' },
+            { icon: '🕐', name: 'Date / Time', api: 'built-in' },
+            { icon: '🧮', name: 'Calculator', api: 'safe-eval engine' },
+            { icon: '📚', name: 'Wikipedia', api: 'Wikipedia REST API' },
+            { icon: '💱', name: 'Unit Converter', api: 'built-in tables' },
             { icon: '📖', name: 'Dictionary', api: 'Free Dictionary API' },
           ].map(t => (
             <div className="dd-tool-card" key={t.name}>
@@ -412,7 +412,7 @@ export function AgentDeepDive() {
             { icon: '🔑', title: 'Proactive Rate Limiting', desc: '"Most-rested-key" selection across N API keys with per-key timestamp tracking. Eliminates 429 errors before they happen' },
             { icon: '📦', title: 'Docker Ready', desc: 'Full Docker Compose with hot-reload for dev. Environment-based secrets management, no hardcoded keys' },
             { icon: '🚀', title: 'Production Deployed', desc: 'Vercel (React frontend) + HuggingFace Spaces (FastAPI backend). CORS-enabled, environment-based config' },
-            { icon: '⚙️', title: 'Tech Stack', desc: 'Python 3.12, FastAPI, React 19, Vite, Groq API (Llama 3.1 70B), FAISS, sentence-transformers' },
+            { icon: '⚙️', title: 'Tech Stack', desc: 'Python 3.12, FastAPI, React 19, Vite, Groq API (Llama 3.1 8B Instant), FAISS, sentence-transformers' },
             { icon: '🛡️', title: 'Error Recovery', desc: 'Exponential backoff with jitter on API failures. Structured error messages for all tool execution failures' },
           ].map(e => (
             <div className="dd-eng-card" key={e.title}>
@@ -439,11 +439,11 @@ export function ToolForgeDeepDive() {
             <div className="dd-abl-cell dd-abl-col">ToolForge (After)</div>
           </div>
           {[
-            ['Accuracy', '~75%', '86.2%'],
+            ['Accuracy', '75.0%', '83.3%'],
             ['Approach', '200+ lines regex', 'QLoRA Qwen2.5-7B'],
             ['Edge cases', 'Constant regressions', 'Learned from data'],
             ['Maintenance', 'High (new regex per bug)', 'Low (retrain)'],
-            ['Latency', '0ms (regex)', '~200ms (GPU)'],
+            ['Latency', '0ms (regex)', '~5s (unbatched T4)'],
           ].map(([aspect, before, after], i) => (
             <div className="dd-abl-row" key={i}>
               <div className="dd-abl-cell dd-abl-row-label">{aspect}</div>
@@ -458,7 +458,7 @@ export function ToolForgeDeepDive() {
         <div className="dd-section-label">Training Pipeline — End to End</div>
         <div className="dd-pipeline">
           {[
-            { step: '01', icon: '📝', name: 'Template Generation (566 lines)', desc: 'Produces ~2K examples with ZERO label noise. Covers: 30 cities, 20 topics, 20 vocabulary words, 15 math expressions, 15 unit conversions. 3 difficulty levels. Categories: single-tool, multi-tool chains, no-tool, ambiguous', color: '#8b5cf6' },
+            { step: '01', icon: '📝', name: 'Template Generation', desc: 'Produces 498 deterministic seed examples with ZERO label noise. Covers: 30 cities, 20 topics, 20 vocabulary words, 15 math expressions, 15 unit conversions. 3 difficulty levels. Categories: single-tool, multi-tool chains, no-tool, ambiguous', color: '#8b5cf6' },
             { step: '02', icon: '🎓', name: 'Teacher Distillation (534 lines)', desc: 'Gemini 2.5 Flash as teacher model. ClientPool with round-robin API rotation and "most rested slot" selection. Crash-proof incremental JSONL saving — every N examples flushed to disk', color: '#22d3ee' },
             { step: '03', icon: '🧹', name: 'Quality Filtering', desc: 'Valid JSON schema validation, no hallucinated tool names, correct argument structure. Filters down to 1,173 clean labeled examples balanced across 9 tool categories', color: '#34d399' },
             { step: '04', icon: '⚡', name: 'QLoRA Fine-Tuning (361 lines)', desc: '4-bit NF4 quantization with double quantization (saves ~0.4GB). Qwen2.5-7B-Instruct base. LoRA rank=64, α=128, targeting ALL attention + MLP layers (q,k,v,o,gate,up,down projections)', color: '#f59e0b' },
@@ -501,14 +501,14 @@ export function ToolForgeDeepDive() {
           <div className="dd-abl-header">
             <div className="dd-abl-cell dd-abl-corner">Run</div>
             <div className="dd-abl-cell dd-abl-col">Base Model</div>
-            <div className="dd-abl-cell dd-abl-col">LoRA Rank</div>
-            <div className="dd-abl-cell dd-abl-col">Accuracy</div>
+            <div className="dd-abl-cell dd-abl-col">Config</div>
+            <div className="dd-abl-cell dd-abl-col">Test Acc</div>
           </div>
           {[
-            ['1', 'Mistral-7B-v0.3', 'r=16', '78.4%', false],
-            ['2', 'Mistral-7B-v0.3', 'r=64', '81.7%', false],
-            ['3', 'Qwen2.5-7B', 'r=16', '83.1%', false],
-            ['4', 'Qwen2.5-7B', 'r=64', '86.2% ★', true],
+            ['1', 'Mistral-7B-v0.3', 'r=64, lr=5e-4', '60.3%', false],
+            ['2', 'Mistral-7B-v0.3', 'r=16, lr=2e-4', '81.9%', false],
+            ['3', 'Mistral-7B-v0.3', 'r=64, lr=2e-4', '82.8%', false],
+            ['4', 'Qwen2.5-7B', 'r=64, lr=2e-4', '86.2% ★', true],
           ].map(([run, model, rank, acc, best]) => (
             <div className="dd-abl-row" key={run}>
               <div className="dd-abl-cell dd-abl-row-label">{run}</div>
@@ -518,7 +518,7 @@ export function ToolForgeDeepDive() {
             </div>
           ))}
         </div>
-        <p className="dd-abl-note">Qwen outperforms Mistral (+4.5%) — Qwen&apos;s chat template naturally handles tool-call JSON. r=64 beats r=16 (+3-4%) — 9-category routing requires higher adapter capacity.</p>
+        <p className="dd-abl-note">Qwen2.5-7B beats the best Mistral run (86.2% vs 82.8%) — its chat template naturally handles tool-call JSON. Learning rate is critical: 5e-4 diverges (60.3%), 2e-4 is the sweet spot. Note: these are on a held-out split of the same synthetic (teacher-labeled) distribution, so they&apos;re an internal hyperparameter comparison — the unbiased, non-circular routing accuracy is 83.3% on a hand-written test set.</p>
       </div>
 
       <div className="dd-section">
@@ -548,13 +548,13 @@ export function ToolForgeDeepDive() {
         <div className="dd-section-label">Production Metrics</div>
         <div className="dd-metrics">
           {[
-            { val: '86.2%', label: 'Best routing accuracy', color: '#34d399' },
+            { val: '83.3%', label: 'Routing acc (non-circular)', color: '#34d399' },
             { val: '1,173', label: 'Clean training examples', color: '#8b5cf6' },
             { val: '9', label: 'Tool categories', color: '#22d3ee' },
-            { val: '75→86%', label: 'Accuracy improvement', color: '#f59e0b' },
+            { val: '75→83%', label: 'Accuracy improvement (+8.3pp)', color: '#f59e0b' },
             { val: '~6GB', label: 'VRAM (free T4)', color: '#34d399' },
             { val: '646MB', label: 'Adapter size', color: '#8b5cf6' },
-            { val: '~200ms', label: 'Inference latency', color: '#22d3ee' },
+            { val: '86.2%', label: 'Best internal ablation run', color: '#22d3ee' },
             { val: '4', label: 'Ablation runs', color: '#f59e0b' },
           ].map(m => (
             <div className="dd-metric-card" key={m.label}>
