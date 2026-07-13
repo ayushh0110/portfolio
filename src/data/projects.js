@@ -7,9 +7,9 @@ export const projects = [
     tags: ['Python', 'Gemma 4', 'llama.cpp', 'FastAPI', 'SQLite', 'sentence-transformers', 'MCP'],
     category: 'AI/ML',
     featured: true,
-    live: null,
+    live: 'https://screenmind.pages.dev/',
     github: 'https://github.com/ayushh0110/ScreenMind',
-    article: 'https://dev.to/ayushh0110/screenmind-i-built-a-privacy-first-ai-screen-memory-that-runs-entirely-on-your-machine-3j20',
+    article: 'https://dev.to/ayushh0110/i-built-a-privacy-first-alternative-to-microsoft-recall-using-all-3-gemma-4-modalities-26bb',
     highlights: [
       'Multimodal on-device AI — Gemma 4 E2B (2B params) analyzes screenshots natively via llama-server, no cloud API calls. Runs on consumer GPUs with as little as 4GB VRAM',
       'Hybrid search engine combining MiniLM sentence embeddings with SQLite FTS5 full-text search — instant recall across thousands of captured screenshots',
@@ -77,7 +77,7 @@ export const projects = [
     category: 'ML',
     featured: true,
     live: null,
-    github: 'https://github.com/ayushh0110',
+    github: null,
     highlights: [
       'DeadCodeAnalyzer (dead_code.py): Scope-stack AST visitor tracking variable/function/class/import usage across nested scopes. Two-pass elimination — first pass removes unused assignments, functions, classes, unreachable if-False branches, and side-effect-free loops; second pass catches imports orphaned by first-pass removals',
       'Handles dynamic code: Parses exec() calls (including f-strings) to extract dynamically defined variables and functions, preserving them from false-positive removal',
@@ -137,7 +137,7 @@ export const projects = [
     category: 'Full Stack',
     featured: false,
     live: null,
-    github: 'https://github.com/ayushh0110',
+    github: null,
     highlights: [
       '<500ms first-token latency via Server-Sent Events streaming',
       'Multi-turn conversation management with session persistence and conversation branching',
